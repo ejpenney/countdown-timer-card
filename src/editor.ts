@@ -3,7 +3,7 @@
 import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
 import { HomeAssistant, fireEvent, LovelaceCardEditor, ActionConfig } from 'custom-card-helpers';
 
-import { BoilerplateCardConfig } from './types';
+import { CountdownTimerCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
 
 const options = {
@@ -47,15 +47,15 @@ const options = {
   },
 };
 
-@customElement('boilerplate-card-editor')
-export class BoilerplateCardEditor extends LitElement implements LovelaceCardEditor {
+@customElement('countdown-timer-card-editor')
+export class CountdownTimerCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
-  @state() private _config?: BoilerplateCardConfig;
+  @state() private _config?: CountdownTimerCardConfig;
   @state() private _toggle?: boolean;
   @state() private _helpers?: any;
   private _initialized = false;
 
-  public setConfig(config: BoilerplateCardConfig): void {
+  public setConfig(config: CountdownTimerCardConfig): void {
     this._config = config;
 
     this.loadCardHelpers();
@@ -75,6 +75,10 @@ export class BoilerplateCardEditor extends LitElement implements LovelaceCardEdi
 
   get _entity(): string {
     return this._config?.entity || '';
+  }
+
+  get _show_clock(): boolean {
+    return this._config?.showClock || false;
   }
 
   get _show_warning(): boolean {
@@ -208,6 +212,18 @@ export class BoilerplateCardEditor extends LitElement implements LovelaceCardEdi
                   @value-changed=${this._valueChanged}
                 ></paper-input>
                 <br />
+<!--TODO:
+      showSmallest: string;
+      showLargest: string;
+      showOnly: string;
+      alwaysShow?: boolean; -->
+                <ha-formfield .label=${`Toggle show clock ${this._show_clock ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._show_clock !== false}
+                    .configValue=${'showClock'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
                 <ha-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
                   <ha-switch
                     .checked=${this._show_warning !== false}
