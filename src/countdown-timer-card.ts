@@ -37,7 +37,7 @@ console.info(
 (window as any).customCards.push({
   type: 'countdown-timer-card',
   name: 'Countdown Timer Card',
-  description: 'Countdown to a given deadline',
+  description: localize('common.description'),
 });
 
 @customElement('countdown-timer-card')
@@ -59,29 +59,24 @@ export class CountdownTimerCard extends LitElement {
   // https://lit-element.polymer-project.org/guide/properties#accessors-custom
   public setConfig(config: CountdownTimerCardConfig): void {
     if (!config) {
-      throw new Error(localize('common.invalid_configuration'));
+      throw new Error(localize('configure.invalid_configuration'));
     }
 
     if (config.test_gui) {
       getLovelace().setEditMode(true);
     }
 
-    if (!config.timers) {
-      throw new Error('You need to define a timer!');
+    if (!config.timers && !config.deadline && !config.entity) {
+      throw new Error(localize('configure.missing_timer'));
     }
     for (const index in config.timers) {
         const timer = config.timers[index];
 
         if(!timer.deadline && !timer.entity) {
-            throw new Error('You need to define a deadline or entity for each timer!');
+            throw new Error(localize('configure.invalid_timer'));
         }
     }
     this.config = config;
-
-    // this.config = {
-    //   name: 'CountdownTimer',
-    //   ...config,
-    // };
   }
 
   // https://lit-element.polymer-project.org/guide/lifecycle#shouldupdate
@@ -144,7 +139,7 @@ export class CountdownTimerCard extends LitElement {
       } else if (showOnly == 'next') {
         toDisplay = Number(durations[toDisplay + 1]);
       } else {
-        throw new Error(`Unrecognized value for showOnly=${showOnly}`);
+        throw new Error(localize('configure.invalid_value') + ` showOnly=${showOnly}`);
       }
 
       // Did we get any valid timers above?
@@ -152,7 +147,7 @@ export class CountdownTimerCard extends LitElement {
         forHTML.push(html`${timers[toDisplay]}<br />`);
       }
       if ( forHTML.length == 0 ) {
-        forHTML = [html`None!`];
+        forHTML = [html`${localize('timer.none')}`];
       }
     } else { // Push everything
       for ( const timer in timers ) {
@@ -169,7 +164,7 @@ export class CountdownTimerCard extends LitElement {
           hasDoubleClick: hasAction(this.config.double_tap_action),
         })}
         tabindex="0"
-        .label=${`CountdownTimer: ${this.config.entity || 'No Entity Defined'}`}
+        .label=${`CountdownTimer: ${this.config.entity || localize('timer.no_entity')}`}
       ><div class="card-content">${forHTML}</div>
       </ha-card>
     `;

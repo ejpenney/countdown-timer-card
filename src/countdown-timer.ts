@@ -2,17 +2,17 @@
 // TODO: If we have multiple timers with the same deadline they break
 // TODO: If showOnly=next, and a %X date appears in the past, +1 the value (and vice versa for showOnly=last)
 // TODO: README.MD
-// TODO: showLargest/showSmallest aren't working
-// TODO: localize strings
+// TODO: editor.ts
 
 import type { CountdownTimerCardConfig } from './types';
 import {
   HomeAssistant,
 } from 'custom-card-helpers';
+import { localize } from './localize/localize';
 
 
 class MetricsObject {
-  // OBject contains time duration definitions, a minute is 60 seconds, etc.
+  // Object contains time duration definitions, a minute is 60 seconds, etc.
   totalSeconds: number;
   roundsAt: number;
   roundsTo: string;
@@ -107,7 +107,7 @@ export class TimerObject {
     // Is this today (at midnight)? If so, then override some values to trick the sorter into displaying this item
     const dateToday = this.formatDate('%M/%D/%Y');
     if ( this.deadline.toISOString() == dateToday.toISOString() ) {
-      this.outputString = `${this.appendString} is today!`;
+      this.outputString = `${this.appendString} ${localize('timer.today')}`;
       this.deadline = this.formatDate('%M/%D/%Y 23:59:59');
       this.remaining = this.getTimeRemaining(this.deadline);
     } else {
@@ -158,24 +158,21 @@ export class TimerObject {
     return result;
   }
 
-  getLimit(userInput: string, defaultVal: string): string {
+  getLimit(userInput: string | undefined, defaultVal: string): string {
     // Prune's trailing "s" for the metrics lookups, then ensures the string is capitalized.
     // Decides whether we've been provided a show(Smallest/Largest) value or if we should use the default.
 
-    console.log("DEBUG: Started with=" + userInput);
     if ( userInput ) {
       if ( userInput.endsWith('s') ) {
         userInput = userInput.slice(0, -1);
       }
       userInput = userInput.charAt(0).toUpperCase() + userInput.slice(1)
     }
-    console.log("DEBUG: Cleaned to=" + userInput);
 
-    if ( typeof this.metrics[userInput] === 'undefined' ) {
+    if ( typeof userInput === 'undefined' || this.metrics[userInput] === 'undefined' ) {
       userInput = defaultVal;
     }
 
-    console.log("DEBUG: Ended with=" + userInput);
     return userInput;
   }
 
@@ -190,10 +187,6 @@ export class TimerObject {
     output.push(outputFunc(this.remaining['total' + this.showLargest], this.showLargest));
     const metricsArry = Object.keys(this.metrics);
     const limit = metricsArry.indexOf(this.showSmallest);
-    console.log("DEBUG: showLargest=" + this.showLargest);
-    console.log("DEBUG: showSmallest=" + this.showSmallest);
-    console.log("DEBUG: limit=" + limit);
-    console.log("DEBUG: metricsArry=" + String(metricsArry));
 
     let nonZero = (this.remaining['total' + this.showLargest] > 0) ? true : false;
     for ( let i = metricsArry.indexOf(this.showLargest) + 1; i <= limit; i++ ) {
@@ -209,14 +202,14 @@ export class TimerObject {
 
     output = output.filter(e => e != "");
     if ( this.showClock === false && output.length > 1 ) {
-      output[output.length - 1] = 'and ' + output[output.length - 1];
+      output[output.length - 1] = `${localize('timer.and_final')} ` + output[output.length - 1];
     }
 
     let outputString = output.join(joinString);
     if ( this.remaining['meridian'] == '+' ) {
-      outputString += ` until`;
+      outputString += ` ${localize('timer.until')}`;
     } else {
-      outputString += ` since`;
+      outputString += ` ${localize('timer.since')}`;
     }
 
     return outputString + ' ' + this.appendString + '!';
@@ -226,6 +219,7 @@ export class TimerObject {
     // String assembly function for long form times (7 days, 3 hours, 25 minutes, 32 seconds)
 
     let output = "";
+    units = localize('timer.units.' + units);
     if ( numVal > 1 ) {
       units += 's';
     }

@@ -1,7 +1,5 @@
 # Countdown Timer Card by [@ejpenney](https://www.github.com/ejpenney)
 
-A simple card for displaying the amount of time till or since some date/time.
-
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE.md)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
@@ -11,6 +9,8 @@ A simple card for displaying the amount of time till or since some date/time.
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
+
+A simple card for displaying the amount of time till or since some date/time.
 
 ## Support
 
@@ -25,10 +25,10 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 | type              | string  | Global Only   | **Required**                 | `custom:countdown-timer-card`                                                                                                                            |
 | name              | string  | Global/timers | **Required**                 | Timer Name                                                                                                                                               |
 | deadline          | string  | Global/timers | **Required**                 | Date/Time string as documented here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse#date_time_string_format |
-| timers            | list    | Global Only   | **Optional**                 | One of `all next last` Shows only most recent or nearest upcoming                                                                                        | `all`                                        |
-| showOnly          | string  | Global/timers | **Optional**                 | One of `all next last` Shows only most recent or nearest upcoming                                                                                        | `all`                                        |
-| showSmallest      | string  | Global/timers | **Optional**                 | One of `days weeks hours minutes seconds` Sets smallest time unit to be displayed                                                                        | `minutes`                                    |
-| showLargest       | string  | Global/timers | **Optional**                 | One of `days weeks hours minutes seconds` Sets largest time unit to be displayed                                                                         | if showClock is `true`, `hours` else `weeks` |
+| timers            | list    | Global Only   | **Optional**                 | One of `[all next last]` Shows only most recent or nearest upcoming                                                                                      | `all`                                        |
+| showOnly          | string  | Global/timers | **Optional**                 | One of `[all next last]` Shows only most recent or nearest upcoming                                                                                      | `all`                                        |
+| showSmallest      | string  | Global/timers | **Optional**                 | One of `[days weeks hours minutes seconds]` Sets smallest time unit to be displayed                                                                      | `minutes`                                    |
+| showLargest       | string  | Global/timers | **Optional**                 | One of `[days weeks hours minutes seconds]` Sets largest time unit to be displayed                                                                       | if showClock is `true`, `hours` else `weeks` |
 | alwaysShow        | boolean | Global/timers | **Optional**                 | Forces a timer to be displayed even if it would be filtered by showOnly                                                                                  | `false`                                      |
 | showClock         | boolean | Global/timers | **Optional**                 | Display times as a clock, like `HH:MM:SS`                                                                                                                | `false`                                      |
 | entity            | string  | Global/timers | **Optional**                 | Home Assistant entity ID to retrieve the date/time from.                                                                                                 | `none`                                       |
@@ -51,7 +51,7 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 | haptic          | string | **Optional** | Haptic feedback for the [Beta IOS App](http://home-assistant.io/ios/beta) _success, warning, failure, light, medium, heavy, selection_ | `none`      |
 | repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `non`       |
 
-## Starting a new card from countdown-timer-card
+## Creating a new countdown-timer-card
 
 ![Preview](https://user-images.githubusercontent.com/21226768/132069331-7fa13211-26da-4ebc-8145-bc0ea7e4956f.png)
 
@@ -81,14 +81,27 @@ timers:
     deadline: '%Y/%M/%D'
 ```
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-cards/countdown-timer-card.svg?style=for-the-badge
-[commits]: https://github.com/custom-cards/countdown-timer-card/commits/master
+![Preview](https://user-images.githubusercontent.com/21226768/132070985-e0dc668e-98b1-448d-b9c6-ea45d01e1eb5.png)
+
+```yaml
+type: custom:countdown-timer-card
+showOnly: next
+timers:
+  - deadline: July 1 2021 16:30:00 GMT-0700
+    name: Sabbatical
+    alwaysShow: true
+  - name: Christmas
+    deadline: December 25, %Y
+```
+
+[commits-shield]: https://img.shields.io/github/commit-activity/y/ejpenney/countdown-timer-card.svg?style=for-the-badge
+[commits]: https://github.com/ejpenney/countdown-timer-card/commits/master
 [devcontainer]: https://code.visualstudio.com/docs/remote/containers
 [discord]: https://discord.gg/5e9yvq
 [discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/c/projects/frontend
-[license-shield]: https://img.shields.io/github/license/custom-cards/countdown-timer-card.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2020.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-cards/countdown-timer-card.svg?style=for-the-badge
-[releases]: https://github.com/custom-cards/countdown-timer-card/releases
+[license-shield]: https://img.shields.io/github/license/ejpenney/countdown-timer-card.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2021.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/ejpenney/countdown-timer-card.svg?style=for-the-badge
+[releases]: https://github.com/ejpenney/countdown-timer-card/releases

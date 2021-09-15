@@ -22,10 +22,9 @@ export interface CountdownTimerCardConfig extends LovelaceCardConfig {
   };
   name: string;
   deadline: string;
-  // TODO: These 3 should be string|undefined but timer-objects doesn't like that
-  showSmallest: string;
-  showLargest: string;
-  showOnly: string;
+  showSmallest?: string;
+  showLargest?: string;
+  showOnly?: string;
   alwaysShow?: boolean;
   showClock?: boolean;
 

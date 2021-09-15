@@ -5,44 +5,45 @@ import { HomeAssistant, fireEvent, LovelaceCardEditor, ActionConfig } from 'cust
 
 import { CountdownTimerCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
+import { localize } from './localize/localize';
 
 const options = {
   required: {
     icon: 'tune',
-    name: 'Required',
-    secondary: 'Required options for this card to function',
+    name: localize('ui.required'),
+    secondary: localize('ui.required_second'),
     show: true,
   },
   actions: {
     icon: 'gesture-tap-hold',
-    name: 'Actions',
-    secondary: 'Perform actions based on tapping/clicking',
+    name: localize('ui.actions'),
+    secondary: localize('ui.actions_second'),
     show: false,
     options: {
       tap: {
         icon: 'gesture-tap',
-        name: 'Tap',
-        secondary: 'Set the action to perform on tap',
+        name: localize('ui.tap'),
+        secondary: localize('ui.tap_second'),
         show: false,
       },
       hold: {
         icon: 'gesture-tap-hold',
-        name: 'Hold',
-        secondary: 'Set the action to perform on hold',
+        name: localize('ui.hold'),
+        secondary: localize('ui.hold_second'),
         show: false,
       },
       double_tap: {
         icon: 'gesture-double-tap',
-        name: 'Double Tap',
-        secondary: 'Set the action to perform on double tap',
+        name: localize('ui.double_tap'),
+        secondary: localize('ui.double_tap_second'),
         show: false,
       },
     },
   },
   appearance: {
     icon: 'palette',
-    name: 'Appearance',
-    secondary: 'Customize the name, icon, etc',
+    name: localize('ui.appearance'),
+    secondary: localize('ui.appearance_second'),
     show: false,
   },
 };

@@ -1,8 +1,45 @@
 {
   "common": {
     "version": "Version",
-    "invalid_configuration": "Invalid configuration",
+    "description": "Countdown to a given deadline",
     "show_warning": "Show Warning",
     "show_error": "Show Error"
+  },
+  "configure": {
+    "invalid_configuration": "Invalid configuration",
+    "missing_timer": "You need to define a timer!",
+    "invalid_timer": "You need to define a deadline or entity for each timer!",
+    "invalid_value": "Unrecognized value"
+  },
+  "timer": {
+    "since": "since",
+    "until": "until",
+    "and_final": "and",
+    "none": "None!",
+    "today": "is today!",
+    "no_entity": "No Entity Defined",
+    "units": {
+      "Year": "year",
+      "Month": "month",
+      "Week": "week",
+      "Day": "day",
+      "Hour": "hour",
+      "Minute": "minute",
+      "Second": "second"
+    }
+  },
+  "ui": {
+    "required": "Required",
+    "required_second": "Required options for this card to function",
+    "actions": "Actions",
+    "actions_second": "Perform actions based on tapping/clicking",
+    "tap": "Tap",
+    "tap_second": "Set the action to perform on tap",
+    "hold": "Hold",
+    "hold_second": "Set the action to perform on hold",
+    "double_tap": "Double Tap",
+    "double_tap_second": "Set the action to perform on double tap",
+    "appearance": "Appearance",
+    "appearance_second": "Customize the name, icon, etc"
   }
 }
