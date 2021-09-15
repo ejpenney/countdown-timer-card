@@ -8,7 +8,7 @@
   "configure": {
     "invalid_configuration": "Invalid configuration",
     "missing_timer": "You need to define a timer!",
-    "invalid_timer": "You need to define a deadline or entity for each timer!",
+    "invalid_timer": "You need to define a name and deadline or entity for each timer!",
     "invalid_value": "Unrecognized value"
   },
   "timer": {

@@ -58,7 +58,10 @@ export class CountdownTimerCard extends LitElement {
 
   // https://lit-element.polymer-project.org/guide/properties#accessors-custom
   public setConfig(config: CountdownTimerCardConfig): void {
-    if (!config) {
+    if ( !config || (config.entity && config.deadline) ) {
+      throw new Error(localize('configure.invalid_configuration'));
+    }
+    if ((config.entity || config.deadline) && config.timers) {
       throw new Error(localize('configure.invalid_configuration'));
     }
 
@@ -75,6 +78,9 @@ export class CountdownTimerCard extends LitElement {
         if(!timer.deadline && !timer.entity) {
             throw new Error(localize('configure.invalid_timer'));
         }
+    }
+    if ((config.deadline || config.entity) && !config.name) {
+      throw new Error(localize('invalid_timer'));
     }
     this.config = config;
   }
@@ -105,24 +111,29 @@ export class CountdownTimerCard extends LitElement {
 
     const timers = {};
     let forHTML: TemplateResult[] = [];
-    for (const timerNumber in this.config.timers) {
-      const timerConfig = Object.assign({}, this.config.timers[timerNumber]);
+    if (this.config.timers) { // Parse a list of timers
+      for (const timerNumber in this.config.timers) {
+        const timerConfig = Object.assign({}, this.config.timers[timerNumber]);
 
-      // Allow Global parameter overrides
-      for ( const param in subParams ) {
-        const parameter = subParams[param];
+        // Allow Global parameter overrides
+        for (const param in subParams) {
+          const parameter = subParams[param];
 
-        if ( typeof timerConfig[parameter] === 'undefined' && typeof this.config[parameter] !== 'undefined' ) {
-          timerConfig[parameter] = this.config[parameter];
+          if (typeof timerConfig[parameter] === 'undefined' && typeof this.config[parameter] !== 'undefined') {
+            timerConfig[parameter] = this.config[parameter];
+          }
         }
-      }
 
-      const timer = new TimerObject(timerConfig, this.hass);
-      if ( timer.alwaysShow ) { // Ignore below filters
-        forHTML.push(html`${timer.outputString}<br />`);
-      }
+        const timer = new TimerObject(timerConfig, this.hass);
+        if (timer.alwaysShow) { // Ignore below filters
+          forHTML.push(html`${timer.outputString}<br />`);
+        }
 
-      timers[timer.remaining['target']] = timer.outputString
+        timers[timer.remaining['target']] = timer.outputString
+      }
+    } else {  // Parse single timer
+      const timer = new TimerObject(this.config, this.hass);
+      timers[timer.remaining['target']] = timer.outputString;
     }
 
     // Are we only showing next/last?

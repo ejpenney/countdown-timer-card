@@ -7,7 +7,6 @@ declare global {
   }
 }
 
-// TODO Add your configuration elements here for type-checking
 export interface CountdownTimerCardConfig extends LovelaceCardConfig {
   type: string;
   title: string;
