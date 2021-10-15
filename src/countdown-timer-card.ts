@@ -146,16 +146,16 @@ export class CountdownTimerCard extends LitElement {
       // We need to know when "now" is relative to those.
       let toDisplay = durations.indexOf(String(nowMarker));
       if ( showOnly == 'last') {
-        toDisplay = Number(durations[toDisplay - 1]);
+        toDisplay -= 1;
       } else if (showOnly == 'next') {
-        toDisplay = Number(durations[toDisplay + 1]);
+        toDisplay += 1;
       } else {
         throw new Error(localize('configure.invalid_value') + ` showOnly=${showOnly}`);
       }
 
       // Did we get any valid timers above?
-      if ( typeof toDisplay !== 'undefined' ) {
-        forHTML.push(html`${timers[toDisplay]}<br />`);
+      if ( typeof timers[durations[toDisplay]] !== 'undefined' ) {
+        forHTML.push(html`${timers[durations[toDisplay]]}<br />`);
       }
       if ( forHTML.length == 0 ) {
         forHTML = [html`${localize('timer.none')}`];
